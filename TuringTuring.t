@@ -1,4 +1,4 @@
-% TuringTuring Simulation Program [Copyright © 2015 Philip Wipf]
+% TuringTuring Simulation Program [Copyright Â© 2015 Philip Wipf]
 
 
     % This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
 % right end of the tape. Here are the sections of the file.
 %
 % [title]
-% a text title
+% a_text_title (no spaces)
 % [number of states]
 % integer
 % [accept state]
@@ -212,7 +212,7 @@ procedure runMachine
 end runMachine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% start program %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-put "TuringTuring Simulation Program [Copyright © 2015 Philip Wipf]\n"
+put "TuringTuring Simulation Program [Copyright Â© 2015 Philip Wipf]\n"
 readTM
 readTape
 runMachine
