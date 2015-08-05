@@ -1,0 +1,31 @@
+[title]
+Invert
+[number of states]
+2
+[start state]
+1
+[accept state]
+2
+[reject state]
+0
+[number of transistions]
+3
+[transition 1]
+1
+0
+1
+1
+R
+[transition 2]
+1
+1
+1
+0
+R
+[transition 3]
+1
+*
+2
+*
+L
+[end]
