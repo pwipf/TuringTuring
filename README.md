@@ -18,6 +18,7 @@ The TM file will consist of the formal description of a turing machine:
 
 A Turing machine is a 7-tuple, (Q, Σ, Γ, δ, q0, qaccept, qreject), where
 Q, Σ, Γ are all finite sets and
+
 1. Q is the set of states,
 2. Σ is the input alphabet not containing the blank symbol ,
 3. Γ is the tape alphabet, where ∈ Γ and Σ ⊆ Γ,
@@ -29,20 +30,27 @@ Q, Σ, Γ are all finite sets and
 (Introduction to the Theory of Computation by Michael Sipser, Third Edition, Course Technology)
 
 Therefore the TM file will include:
+
 1. First an integer n which will be the number of states, labeled Qsub1 through Qsubn.
 2. The input alphabet will be skipped, as it will be inferred from the input tape and transition function.
 3. The tape alphabet will be skipped, as it will be inferred from the input tape and transition function.
 4. The transition function will be a list of transitions which are:
+
     a. integer representing beginning state for the transition.
+    
     b. character to read under the head.
+    
     c. integer representing the goto state of the transition.
+    
     d. character to write to the tape.
+    
     e. character 'R' or 'L' specifying which way to move the head.
 5. The start state, as a single integer.
 6. The accept state, and
 7. The reject state.
 
 The input TAPE file will include:
+
 1. The characters on the input tape consecutively.
 
 Upon starting the program will read the TM file and use this information to run the turing machine on the input. The (text based) output will be along the lines of "Read a '1', Wrote a '2', Move Head Right, now in State 4.  And "Entered accept state, tape contents: >785.32<
