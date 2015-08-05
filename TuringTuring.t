@@ -1,4 +1,4 @@
-% TuringTuring Simulation Program [Copyright Â© 2015 Philip Wipf]
+% TuringTuring Simulation Program [Copyright © 2015 Philip Wipf]
 
 
     % This program is free software: you can redistribute it and/or modify
@@ -58,23 +58,23 @@
 
 type Transition:
     record
-        fromState: int
-        readSymbol: char
-        toState: int
-        writeSymbol: char
-        leftOrRight: char
+	fromState: int
+	readSymbol: char
+	toState: int
+	writeSymbol: char
+	leftOrRight: char
     end record
     
 type TM:
     record
-        title: string
-        numStates: int
-        numTrans: int
-        startState: int
-        acceptState: int
-        rejectState: int
-        trans: array 1..100 of Transition
-        trany: Transition
+	title: string
+	numStates: int
+	numTrans: int
+	startState: int
+	acceptState: int
+	rejectState: int
+	trans: array 1..100 of Transition
+	trany: Transition
     end record
 
 
@@ -93,15 +93,15 @@ procedure readTM
     var tmfile: int :=0
     var tmfilename: string
     loop
-        put "Enter name of TM file to load: "..
-        get tmfilename
-        open : tmfile, tmfilename, get
-        if tmfile > 0 then
-            put "Reading in Turing Machine from file ",tmfilename,"..."
-            exit
-        else
-            put "Can't open ",tmfilename
-        end if
+	put "Enter name of TM file to load: "..
+	get tmfilename
+	open : tmfile, tmfilename, get
+	if tmfile > 0 then
+	    put "Reading in Turing Machine from file ",tmfilename,"..."
+	    exit
+	else
+	    put "Can't open ",tmfilename
+	end if
     end loop
 
     var s: string
@@ -110,10 +110,10 @@ procedure readTM
     get :tmfile, tm.acceptState, s:*, tm.rejectState
     get :tmfile, s:*, tm.numTrans
     for i: 1..tm.numTrans
-        get :tmfile, s:*, tm.trans(i).fromState
-        get :tmfile, tm.trans(i).readSymbol, s:*
-        get :tmfile, tm.trans(i).toState, tm.trans(i).writeSymbol, s:*
-        get :tmfile, tm.trans(i).leftOrRight, s:*
+	get :tmfile, s:*, tm.trans(i).fromState
+	get :tmfile, tm.trans(i).readSymbol, s:*
+	get :tmfile, tm.trans(i).toState, tm.trans(i).writeSymbol, s:*
+	get :tmfile, tm.trans(i).leftOrRight, s:*
     end for
     close :tmfile
 end readTM
@@ -123,30 +123,30 @@ end readTM
 % reads in the tape from a file
 procedure readTape
     for i: 1..1000  % first must initialize tape to *******....
-        tape(i):= '*'
+	tape(i):= '*'
     end for
 
     var tfile: int :=0
     var tfilename: string:="tape.txt"
     loop
-        put "Enter name of input tape file to run \"",tm.title,"\" on: "..
-        get tfilename
-        open : tfile, "tape.txt", get
-        if tfile > 0 then
-            put "Reading in input tape from file ",tfilename,"..."
-            exit
-        else
-            put "Can't open ",tfilename
-        end if
+	put "Enter name of input tape file to run \"",tm.title,"\" on: "..
+	get tfilename
+	open : tfile, "tape.txt", get
+	if tfile > 0 then
+	    put "Reading in input tape from file ",tfilename,"..."
+	    exit
+	else
+	    put "Can't open ",tfilename
+	end if
     end loop
     
     tapeLength:=0
     loop
-        var c:char
-        get :tfile, c
-        exit when c ='\r' or c = chr(0)
-        tapeLength:= tapeLength+1
-        tape(tapeLength):= c
+	var c:char
+	get :tfile, c
+	exit when c ='\r' or c = chr(0)
+	tapeLength:= tapeLength+1
+	tape(tapeLength):= c
     end loop
 end readTape
 
@@ -158,7 +158,7 @@ proc showTape(headPos:int)
   put "Tape:  ["..
   for i: 1..hmax
     if headPos = i then
-        put ">"..
+	put ">"..
     end if
     put tape(i)..
   end for
@@ -173,11 +173,11 @@ function doTransition(i: int) :int
     %put "Transition ",i
     tape(h):= tm.trans(i).writeSymbol
     if tm.trans(i).leftOrRight = 'L' and h > 1 then
-        h:= h-1
+	h:= h-1
     else
-        if tm.trans(i).leftOrRight = 'R' and h <= 1000 then
-            h:= h+1
-        end if
+	if tm.trans(i).leftOrRight = 'R' and h <= 1000 then
+	    h:= h+1
+	end if
     end if
     result tm.trans(i).toState
 end doTransition
@@ -192,30 +192,29 @@ procedure runMachine
     hmax:=tapeLength+3
     var w:char
     loop
-        showTape(h)
-        for i: 1..tm.numTrans
-            if tm.trans(i).fromState = c and
-               tm.trans(i).readSymbol = tape(h) then
-                c:= doTransition(i)
-                exit
-            end if
-        end for
-        
-        
-        exit when c=tm.acceptState or c=tm.rejectState
+	showTape(h)
+	for i: 1..tm.numTrans
+	    if tm.trans(i).fromState = c and
+	       tm.trans(i).readSymbol = tape(h) then
+		c:= doTransition(i)
+		exit
+	    end if
+	end for
+	
+	
+	exit when c=tm.acceptState or c=tm.rejectState
     end loop
     if c=tm.acceptState then
-        put "Accept!"
+	put "Accept!"
     else
-        put "Reject!"
+	put "Reject!"
     end if
 end runMachine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% start program %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-put "TuringTuring Simulation Program [Copyright Â© 2015 Philip Wipf]\n"
+put "TuringTuring Simulation Program [Copyright © 2015 Philip Wipf]\n"
 readTM
 readTape
-cls
 runMachine
 
 
