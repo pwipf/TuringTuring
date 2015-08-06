@@ -46,6 +46,7 @@
 % integer    (beginning state)
 % ...
 % etc.
+%[end]
 %
 % The tape file is also a text file, this one consists of a single line of
 % symbols that match the characters of the input characters of the transitions.
@@ -58,23 +59,23 @@
 
 type Transition:
     record
-	fromState: int
-	readSymbol: char
-	toState: int
-	writeSymbol: char
-	leftOrRight: char
+        fromState: int
+        readSymbol: char
+        toState: int
+        writeSymbol: char
+        leftOrRight: char
     end record
     
 type TM:
     record
-	title: string
-	numStates: int
-	numTrans: int
-	startState: int
-	acceptState: int
-	rejectState: int
-	trans: array 1..100 of Transition
-	trany: Transition
+        title: string
+        numStates: int
+        numTrans: int
+        startState: int
+        acceptState: int
+        rejectState: int
+        trans: array 1..100 of Transition
+        trany: Transition
     end record
 
 
@@ -87,21 +88,44 @@ var h: int
 var hmax: int:=0
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% process leaf()
+% rotates a maple leaf at cx,cy size s color c
+process leaf (cx,cy,s,c:int)
+    var x1,y1,x2,y2,sx,cc,t:int
+    randint(t,1,360)
+    y1:=cy-s y2:=cy+s
+    sx:=floor(s*sind(t))
+    x1:=cx-sx x2:=cx+sx
+    loop
+        if(t mod 360) > 180 then cc:= gray else cc:=c end if
+        delay(40)
+        drawfillmapleleaf(x1,y1,x2,y2,white)
+        t:=t+10
+        sx:=floor(s*sind(t))
+        x1:=cx-sx x2:=cx+sx
+        drawfillmapleleaf(x1,y1,x2,y2,cc)
+    end loop
+end leaf
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % readTM
 % reads in the turing machine from a file
 procedure readTM
     var tmfile: int :=0
     var tmfilename: string
     loop
-	put "Enter name of TM file to load: "..
-	get tmfilename
-	open : tmfile, tmfilename, get
-	if tmfile > 0 then
-	    put "Reading in Turing Machine from file ",tmfilename,"..."
-	    exit
-	else
-	    put "Can't open ",tmfilename
-	end if
+        locate(whatrow(),10)
+        put "Enter name of TM file to load: "..
+        get tmfilename
+        open : tmfile, tmfilename, get
+        if tmfile > 0 then
+            locate(whatrow(),10)
+            put "Reading in Turing Machine from file ",tmfilename,"..."
+            exit
+        else
+            locate(whatrow(),10)
+            put "Can't open ",tmfilename
+        end if
     end loop
 
     var s: string
@@ -110,10 +134,10 @@ procedure readTM
     get :tmfile, tm.acceptState, s:*, tm.rejectState
     get :tmfile, s:*, tm.numTrans
     for i: 1..tm.numTrans
-	get :tmfile, s:*, tm.trans(i).fromState
-	get :tmfile, tm.trans(i).readSymbol, s:*
-	get :tmfile, tm.trans(i).toState, tm.trans(i).writeSymbol, s:*
-	get :tmfile, tm.trans(i).leftOrRight, s:*
+        get :tmfile, s:*, tm.trans(i).fromState
+        get :tmfile, tm.trans(i).readSymbol, s:*
+        get :tmfile, tm.trans(i).toState, tm.trans(i).writeSymbol, s:*
+        get :tmfile, tm.trans(i).leftOrRight, s:*
     end for
     close :tmfile
 end readTM
@@ -123,30 +147,33 @@ end readTM
 % reads in the tape from a file
 procedure readTape
     for i: 1..1000  % first must initialize tape to *******....
-	tape(i):= '*'
+        tape(i):= '*'
     end for
 
     var tfile: int :=0
     var tfilename: string:="tape.txt"
     loop
-	put "Enter name of input tape file to run \"",tm.title,"\" on: "..
-	get tfilename
-	open : tfile, "tape.txt", get
-	if tfile > 0 then
-	    put "Reading in input tape from file ",tfilename,"..."
-	    exit
-	else
-	    put "Can't open ",tfilename
-	end if
+        locate(whatrow(),10)
+        put "Enter name of input tape file to run \"",tm.title,"\" on: "..
+        get tfilename
+        open : tfile, "tape.txt", get
+        if tfile > 0 then
+            locate(whatrow(),10)
+            put "Reading in input tape from file ",tfilename,"..."
+            exit
+        else
+            locate(whatrow(),10)
+            put "Can't open ",tfilename
+        end if
     end loop
     
     tapeLength:=0
     loop
-	var c:char
-	get :tfile, c
-	exit when c ='\r' or c = chr(0)
-	tapeLength:= tapeLength+1
-	tape(tapeLength):= c
+        var c:char
+        get :tfile, c
+        exit when c ='\r' or c = chr(0)
+        tapeLength:= tapeLength+1
+        tape(tapeLength):= c
     end loop
 end readTape
 
@@ -155,10 +182,11 @@ end readTape
 % just outputs the current tape, with the head position
 % shown by a '>'
 proc showTape(headPos:int)
+  locate(whatrow(),10)
   put "Tape:  ["..
   for i: 1..hmax
     if headPos = i then
-	put ">"..
+        put ">"..
     end if
     put tape(i)..
   end for
@@ -173,11 +201,11 @@ function doTransition(i: int) :int
     %put "Transition ",i
     tape(h):= tm.trans(i).writeSymbol
     if tm.trans(i).leftOrRight = 'L' and h > 1 then
-	h:= h-1
+        h:= h-1
     else
-	if tm.trans(i).leftOrRight = 'R' and h <= 1000 then
-	    h:= h+1
-	end if
+        if tm.trans(i).leftOrRight = 'R' and h <= 1000 then
+            h:= h+1
+        end if
     end if
     result tm.trans(i).toState
 end doTransition
@@ -186,32 +214,42 @@ end doTransition
 % runMachine procedure
 % simulates the machine
 procedure runMachine
+    locate(whatrow(),10)
     put "Running Turing Machine \"",tm.title,"\""
     c:= tm.startState
     h:= 1
     hmax:=tapeLength+3
     var w:char
     loop
-	showTape(h)
-	for i: 1..tm.numTrans
-	    if tm.trans(i).fromState = c and
-	       tm.trans(i).readSymbol = tape(h) then
-		c:= doTransition(i)
-		exit
-	    end if
-	end for
-	
-	
-	exit when c=tm.acceptState or c=tm.rejectState
+        showTape(h)
+        for i: 1..tm.numTrans
+            if tm.trans(i).fromState = c and
+               tm.trans(i).readSymbol = tape(h) then
+                c:= doTransition(i)
+                exit
+            end if
+        end for
+        
+        
+        exit when c=tm.acceptState or c=tm.rejectState
     end loop
     if c=tm.acceptState then
-	put "Accept!"
+        locate(whatrow(),10)
+        put "Accept!"
     else
-	put "Reject!"
+        locate(whatrow(),10)
+        put "Reject!"
     end if
 end runMachine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% start program %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+setscreen("graphics:1000;500,nobuttonbar")
+fork leaf(30,30,30,39)
+fork leaf(30,maxy-30,30,39)
+fork leaf(maxx-30,maxy-30,30,39)
+fork leaf(maxx-30,30,30,39)
+
+locate(whatrow(),10)
 put "TuringTuring Simulation Program [Copyright © 2015 Philip Wipf]\n"
 readTM
 readTape
