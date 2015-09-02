@@ -35,12 +35,11 @@ Therefore the TM file will include:
 2. The input alphabet will be skipped, as it will be inferred from the input tape and transition function.
 3. The tape alphabet will be skipped, as it will be inferred from the input tape and transition function.  
 
-(order changed slightly to put transition functions at the end.
-
-4. The start state, as a single integer.
-5. The accept state,
-6. The reject state,
-7. The number of transitions
+(order changed slightly to put transition functions at the end.  
+4. The start state, as a single integer.  
+5. The accept state, 
+6. The reject state,  
+7. The number of transitions  
 8. The transition function will be a list of transitions which are:
 
     a. integer representing beginning state for the transition.
