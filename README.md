@@ -4,7 +4,7 @@ A simple Turing Machine simulator using the programming language TURING.
 # What?
 This is a small project (1 file) created for a school assignment.
 
-Turing is a programming language, named for Alan Turing of course, often described as similar to Pascal. I have not spent much time with Pascal, but I believe Turing is a little higher level, with support for things Pascal cannot do, like dynamic arrays. Turing was started in 1982 and it seems to be in some ways a response to C. There is much emphasis on safety and security, catching bugs, and not doing unexpected or uncontrolled things.
+Turing is a programming language, named for Alan Turing of course, often described as similar to Pascal. I have not spent much time with Pascal, but I believe Turing is a little higher level, with support for things Pascal cannot do, like dynamic arrays and modules (classes). Turing was started in 1982 and it seems to be in some ways a response to C. There is much emphasis on safety and security, catching bugs, and not doing unexpected or uncontrolled things.
 
 # Purpose
 To learn the Turing programming language, and also learn and understand Turing Machines.
@@ -31,10 +31,17 @@ Q, Σ, Γ are all finite sets and
 
 Therefore the TM file will include:
 
-1. First an integer n which will be the number of states, labeled Qsub1 through Qsubn.
+1. First an integer n which will be the number of states.
 2. The input alphabet will be skipped, as it will be inferred from the input tape and transition function.
-3. The tape alphabet will be skipped, as it will be inferred from the input tape and transition function.
-4. The transition function will be a list of transitions which are:
+3. The tape alphabet will be skipped, as it will be inferred from the input tape and transition function.  
+
+(order changed slightly to put transition functions at the end.
+
+4. The start state, as a single integer.
+5. The accept state,
+6. The reject state,
+7. The number of transitions
+8. The transition function will be a list of transitions which are:
 
     a. integer representing beginning state for the transition.
     
@@ -45,14 +52,11 @@ Therefore the TM file will include:
     d. character to write to the tape.
     
     e. character 'R' or 'L' specifying which way to move the head.
-5. The start state, as a single integer.
-6. The accept state, and
-7. The reject state.
 
 The input TAPE file will include:
 
 1. The characters on the input tape consecutively.
 
-Upon starting the program will read the TM file and use this information to run the turing machine on the input. The (text based) output will be along the lines of "Read a '1', Wrote a '2', Move Head Right, now in State 4.  And "Entered accept state, tape contents: >785.32<
+Upon starting the program will read the TM file and use this information to run the turing machine on the input. The (text based) output will show step by step the tape and the head position.
 
 This is a learning project so every effort will be made to make the program easily understandable, and hardly any effort will be made to make it efficient.
